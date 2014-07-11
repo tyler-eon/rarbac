@@ -20,11 +20,15 @@ You simply add the gem and then mount the engine.
 
 In your Gemfile:
 
-    gem 'rarbac'
+```ruby
+gem 'rarbac'
+```
 
 In `config/routes.rb`:
 
-    mount Rarbac::Engine, at: "rarbac"
+```ruby
+mount Rarbac::Engine, at: "rarbac"
+```
 
 The project includes migrations for non-user data. Your Rails app must have, and
 supply, its own user model. To generate the migrations and models for `rarbac`
@@ -86,55 +90,69 @@ un-authenticated users, would be allowed access to that route.
 You may also customize your filters using the normal application controller
 options:
 
-    before_filter :ensure_permission!, only: :destroy
+```ruby
+before_filter :ensure_permission!, only: :destroy
+```
 
 Now the filter only runs when the `destroy` action is being executed. You may
 also use the block method of invoking a filter to further customize your
 options:
 
-    before_filter only: :destroy do |controller|
-      controller.ensure_permission!(:delete_post)
-    end
+```ruby
+before_filter only: :destroy do |controller|
+  controller.ensure_permission!(:delete_post)
+end
+```
 
 But wait, there's more! What if you want to check a role rather than an
 individual permission to some action? Maybe an entire controller should be
 off-limits to everyone but those with the `admin` role. That's easy:
 
-    before_filter do |controller|
-      controller.ensure_role!(:admin)
-    end
+```ruby
+before_filter do |controller|
+  controller.ensure_role!(:admin)
+end
+```
 
 Bonus: it accepts arrays of roles.
 
-    before_filter do |controller|
-      controller.ensure_role!(:author, :admin)
-      # The above uses an "OR" operation; use the plural to perform "AND"
-      # e.g. controller.ensure_roles!(:author, :admin)
-    end
+```ruby
+before_filter do |controller|
+  controller.ensure_role!(:author, :admin)
+  # The above uses an "OR" operation; use the plural to perform "AND"
+  # e.g. controller.ensure_roles!(:author, :admin)
+end
+```
 
 Don't forget that you may create your own filter functions and call `ensure_*`
 from there:
 
-    before_filter :custom_filter
-    ...
-    def custom_filter
-      ensure_permission!
-    end
+```ruby
+before_filter :custom_filter
+
+def custom_filter
+  ensure_permission!
+end
+```
 
 ### Model Functions
 
 With the appropriate permissions added to your user model you may very easily
 check on a user's roles:
 
-    user.has_role?(:admin)
-    user.has_role?(:admin, :author)  # Singular noun implies "OR" operation
-                                     # e.g. has_role?(:admin) || has_role?(:author)
-    user.has_roles?(:admin, :author) # Plural noun implies "AND" operation
-                                     # e.g. has_role?(:admin) && has_role?(:author)
+```ruby
+user.has_role?(:admin)
+user.has_role?(:admin, :author)  # Singular noun implies "OR" operation
+                                 # e.g. has_role?(:admin) || has_role?(:author)
+user.has_roles?(:admin, :author) # Plural noun implies "AND" operation
+                                 # e.g. has_role?(:admin) && has_role?(:author)
+```
 
 And also permissions:
 
-    user.has_permission?(:delete_post)
+```ruby
+user.has_permission?(:delete_post)
+```
 
 It's important to note that permissions don't accept arrays. Why? Because very
 rarely should you be checking for a collection of permissions in a single
