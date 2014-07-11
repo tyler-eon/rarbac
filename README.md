@@ -88,7 +88,7 @@ model, so you may have a single user with more than one role.
 ### Controller Filters
 
 You may use the `Rarbac` controller filters/functions by including
-`Rarbac::ControllerHelpers`. The only assumption made is the presence of a
+`Rarbac::ApplicationHelper`. The only assumption made is the presence of a
 resource (function or attribute) named `current_user`. This is modeled after the
 popular authentication gem [Devise](https://github.com/plataformatec/devise).
 
