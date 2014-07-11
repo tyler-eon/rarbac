@@ -36,7 +36,35 @@ simply use:
 
     rake rarbac:install
 
-Then run migrations and start up your application as usual.
+Then run migrations. One more step to ensure everything works properly. Open
+your user model and add the following to it:
+
+```ruby
+has_many :user_roles, class_name: "Rarbac::UserRole"
+has_many :roles, through: :user_roles, class_name: "Rarbac::Role"
+has_many :permissions, through: :roles, class_name: "Rarbac::Permission"
+has_many :actions, through: permissions, class_name: "Rarbac::Action"
+
+include Rarbac::UserHelper
+```
+
+That may seem like a lot, but really we're just off-loading a lot of the
+querying work to the underlying `ActiveRecord` base (or whatever else you are
+using). If we didn't do this we would have to do things like:
+
+```ruby
+user.user_roles.roles.permissions.where(...)
+```
+
+By including all those `has_many X through: Y` statements, we can go straight to
+what we want:
+
+```ruby
+user.permissions.where(...)
+```
+
+With migrations installed, run, and the user model setup, start your application
+and enjoy! Read on to make the most out of `rarbac`.
 
 ## How it works
 
