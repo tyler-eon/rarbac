@@ -37,13 +37,21 @@ module Rarbac
         action = "#{klass}##{action_name}"
       end
 
-      has_something?(:has_permission?, action, block)
+      # If the action doesn't exist, don't worry about the current_user
+      if Action.where(name: action).count == 0
+        maybe_render(true, block)
+      else
+        has_something?(:has_permission?, action, block)
+      end
     end
 
     private
 
-    def has_something?(method, args, &block)
-      success = current_user.send(method, args)
+    def has_something?(method, args, block)
+      maybe_render(current_user.send(method, args), block)
+    end
+
+    def maybe_render(success, block)
       if block
         block.call(success)
       elsif !success
