@@ -31,19 +31,18 @@ mount Rarbac::Engine, at: "rarbac"
 ```
 
 The project includes migrations for non-user data. Your Rails app must have, and
-supply, its own user model. To generate the migrations and models for `rarbac`
-simply use:
+supply, its own user model. To generate the migrations for `rarbac` simply run:
 
-    rake rarbac:install
+    rake rarbac:install:migrations
 
 Then run migrations. One more step to ensure everything works properly. Open
 your user model and add the following to it:
 
 ```ruby
-has_many :user_roles, class_name: "Rarbac::UserRole"
-has_many :roles, through: :user_roles, class_name: "Rarbac::Role"
-has_many :permissions, through: :roles, class_name: "Rarbac::Permission"
-has_many :actions, through: permissions, class_name: "Rarbac::Action"
+has_many :user_roles,                         class_name: "Rarbac::UserRole"
+has_many :roles,       through: :user_roles,  class_name: "Rarbac::Role"
+has_many :permissions, through: :roles,       class_name: "Rarbac::Permission"
+has_many :actions,     through: :permissions, class_name: "Rarbac::Action"
 
 include Rarbac::UserHelper
 ```
