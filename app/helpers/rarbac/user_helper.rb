@@ -7,21 +7,21 @@ module Rarbac
   module UserHelper
     # Determines if the user has one or more of the given roles linked to it.
     #
-    # @param [String] roles an argument list of one or more roles to check for.
+    # @param [String] args an argument list of one or more roles to check for.
     # @return [true|false] true if the user is linked to at least one of the
     #   given roles.
-    def has_role?(*roles)
-      throw Exception.new("Must supply at least one role.") if roles.empty?
-      roles.where(name: roles).count > 0
+    def has_role?(*args)
+      throw Exception.new("Must supply at least one role.") if args.empty?
+      roles.where(name: args).count > 0
     end
 
     # Determines if the user has all of the given roles linked to it.
     #
-    # @param [String] roles an argument list of one or more roles to check for.
+    # @param [String] args an argument list of one or more roles to check for.
     # @return [true|false] true if the user is linked to all of the given roles.
-    def has_roles?(*roles)
-      throw Exception.new("Must supply at least one role.") if roles.empty?
-      roles.where(name: roles).count == roles.count
+    def has_roles?(*args)
+      throw Exception.new("Must supply at least one role.") if args.empty?
+      roles.where(name: args).count == args.count
     end
 
     # Determines if the user has permission to a given action. If the action
