@@ -96,7 +96,9 @@ You may add `before_filter :ensure_permission!` to create role-based authorizati
 on the controller and action being executed. For example:
 
 ```ruby
-class PostsController < Rarbac::ApplicationController
+class PostsController < ApplicationController::Base
+  include Rarbac::ApplicationHelper
+
   before_filter :ensure_permission!
 
   def show
