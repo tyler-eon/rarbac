@@ -153,15 +153,9 @@ end
 ```
 
 Don't forget that you may create your own filter functions and call `ensure_*`
-from there:
-
-```ruby
-before_filter :custom_filter
-
-def custom_filter
-  ensure_permission!
-end
-```
+from there. However, if you create a custom filter and have access to
+`current_user`, it might be better, and more configurable, to use the model
+functions defined in the next section.
 
 ### Model Functions
 
