@@ -33,9 +33,8 @@ module Rarbac
     #   the result of the role check.
     def ensure_permission!(action=nil, &block)
       unless action
-        # TODO: If not supplied an action, determine the controller name and
-        # action being invoked, and use that to generate an appropriate action
-        # name to check.
+        klass = self.class.name.underscore.sub("_controller", "")
+        action = "#{klass}##{action_name}"
       end
 
       has_something?(:has_permission?, action, block)
